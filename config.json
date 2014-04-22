@@ -1,0 +1,14 @@
+{
+  "cookiepre": "speedy_",
+  "authKey": "speedy",
+  "mysql": {
+    "host": "sharenode.org",
+    "user": "root",
+    "passwd": "local127001",
+    "database": "speedy"
+  },
+  "redis": {
+    "port": 6379,
+    "host": "sharenode.org"
+  }
+}
