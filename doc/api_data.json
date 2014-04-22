@@ -1,0 +1,1282 @@
+[
+  {
+    "version": "0.0.1",
+    "group": "_apidoc.js",
+    "type": "",
+    "url": "",
+    "filename": "api\\_apidoc.js"
+  },
+  {
+    "version": "0.0.1",
+    "group": "_apidoc.js",
+    "type": "",
+    "url": "",
+    "filename": "api\\_apidoc.js"
+  },
+  {
+    "type": "delete",
+    "url": "/friendGroup/:id",
+    "title": "删除分组",
+    "name": "删除分组",
+    "group": "好友分组类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":id",
+            "optional": false,
+            "description": "记录ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n"
+        }
+      ]
+    },
+    "filename": "api\\friend_group.js"
+  },
+  {
+    "type": "put",
+    "url": "/friendGroup/:id",
+    "title": "更改分组",
+    "name": "更改分组",
+    "group": "好友分组类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":id",
+            "optional": false,
+            "description": "记录ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "分组名"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "记录ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "分组名"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n   \"id\": 472\n   \"uid\": 13\n   \"name\": \"test\"\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\friend_group.js"
+  },
+  {
+    "type": "post",
+    "url": "/friendGroup",
+    "title": "添加分组",
+    "name": "添加分组",
+    "group": "好友分组类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "分组名"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "记录ID"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n   \"id\": 45\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\friend_group.js"
+  },
+  {
+    "type": "get",
+    "url": "/friendGroup/:uid",
+    "title": "获取好友分组列表",
+    "name": "获取好友分组列表",
+    "group": "好友分组类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":uid",
+            "optional": false,
+            "description": "用户ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "记录ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "name",
+            "optional": false,
+            "description": "分组名"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n [\n   {\n     \"id\": 42,\n     \"uid\": 13,\n     \"name\": \"我的同事\"\n   }\n   ......\n ]\n"
+        }
+      ]
+    },
+    "filename": "api\\friend_group.js"
+  },
+  {
+    "type": "delete",
+    "url": "/friend/:id",
+    "title": "删除好友",
+    "name": "删除好友",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":id",
+            "optional": false,
+            "description": "记录ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n"
+        }
+      ]
+    },
+    "filename": "api\\friend.js"
+  },
+  {
+    "type": "post",
+    "url": "/friend/reject",
+    "title": "拒绝好友",
+    "name": "拒绝好友",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fuid",
+            "optional": false,
+            "description": "好友用户ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "记录ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "fuid",
+            "optional": false,
+            "description": "好友用户ID"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n   \"uid\": 13,\n   \"fuid\": 16\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\friend.js"
+  },
+  {
+    "type": "put",
+    "url": "/friend/:id",
+    "title": "更改好友",
+    "name": "更改好友",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":id",
+            "optional": false,
+            "description": "记录ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fgid",
+            "optional": false,
+            "description": "好友分组ID(可选)"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "ischeck",
+            "optional": false,
+            "description": "是否已审核通过(可选)"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "remark",
+            "optional": false,
+            "description": "备注名(可选)"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "记录ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "mixed",
+            "field": "更",
+            "optional": false,
+            "description": "多 变更的字段"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n   \"id\": 472\n   \"uid\": 13\n   ......\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\friend.js"
+  },
+  {
+    "type": "post",
+    "url": "/friend",
+    "title": "添加好友",
+    "name": "添加好友",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fuid",
+            "optional": false,
+            "description": "好友用户ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fgid",
+            "optional": false,
+            "description": "好友分组ID(默认为0)"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "ischeck",
+            "optional": false,
+            "description": "是否已审核通过(默认为0)"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "remark",
+            "optional": false,
+            "description": "备注名(可选)"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "apply",
+            "optional": false,
+            "description": "好友申请理由(可选)"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "reason",
+            "optional": false,
+            "description": "好友拒绝了理由(可选)"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "记录ID"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n   \"id\": 472\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\friend.js"
+  },
+  {
+    "type": "get",
+    "url": "/friend/:uid",
+    "title": "获取好友列表",
+    "name": "获取好友列表",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":uid",
+            "optional": false,
+            "description": "用户ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "记录ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "fuid",
+            "optional": false,
+            "description": "好友用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "fgid",
+            "optional": false,
+            "description": "好友分组ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "ischeck",
+            "optional": false,
+            "description": "是否已审核通过"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "remark",
+            "optional": false,
+            "description": "备注名"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "apply",
+            "optional": false,
+            "description": "好友申请理由"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "reason",
+            "optional": false,
+            "description": "好友拒绝了理由"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "isonline",
+            "optional": false,
+            "description": "是否在线"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n [\n   {\n     \"id\": 472,\n     \"uid\": 13,\n     \"fuid\": 16,\n     \"fgid\": 0,\n     \"ischeck\": 1,\n     \"remark\": \"加贤\",\n     \"apply\": \"333\",\n     \"reason\": \"\",\n     \"isonline\": false\n   }\n   ......\n ]\n"
+        }
+      ]
+    },
+    "filename": "api\\friend.js"
+  },
+  {
+    "type": "get",
+    "url": "/message",
+    "title": "获取消息",
+    "name": "获取消息",
+    "group": "消息类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fromid",
+            "optional": false,
+            "description": "发送者ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "toid",
+            "optional": false,
+            "description": "接收者ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "type",
+            "optional": false,
+            "description": "消息类型"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "limit",
+            "optional": false,
+            "description": "数据分段参数,例:limit 0,15(默认为0,10)(可选)"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "id",
+            "optional": false,
+            "description": "消息ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "type",
+            "optional": false,
+            "description": "消息类型"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "createtime",
+            "optional": false,
+            "description": "创建时间"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "isread",
+            "optional": false,
+            "description": "是否已读"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "from",
+            "optional": false,
+            "description": "发送者ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "to",
+            "optional": false,
+            "description": "接收者ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "key",
+            "optional": false,
+            "description": "消息key值(同一对用户会话会有相同的key,根据from,to,type字段生成)"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "消息内容"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK  \n [\n   {\n     \"id\": 1012,\n     \"type\": 1,\n     \"createtime\": 1395741052,\n     \"isread\": 1,\n     \"data\": {\n       \"msg\": \"你好\",\n       \"fromuserdata\": {\n         \"uid\": 13,\n         \"username\": \"root\",\n         \"nickname\": \"兔子\",\n         \"mood\": \"今天好心情\",\n         \"allowtype\": 1,\n         \"question\": \"haha\",\n         \"answer\": \"lala\",\n         \"regtime\": 0,\n         \"regip\": \"\",\n         \"lastlogintime\": 0,\n         \"lastloginip\": \"\",\n         \"avatar\": \"57931a1eb6e3c29b849af741dc19b095.jpg\",\n         \"area\": \"河南 郑州\"\n       }\n     },\n     \"to\": 16,\n     \"from\": 13,\n     \"key\": \"5d70c954703728df3ad79d0292275218\"\n   }\n ]\n"
+        }
+      ]
+    },
+    "filename": "api\\message.js"
+  },
+  {
+    "type": "get",
+    "url": "/message/count/:fromid/:toid/:type",
+    "title": "获取消息统计",
+    "name": "获取消息统计",
+    "group": "消息类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":fromid",
+            "optional": false,
+            "description": "发送者ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":toid",
+            "optional": false,
+            "description": "接收者ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":type",
+            "optional": false,
+            "description": "消息类型"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "count",
+            "optional": false,
+            "description": "消息条数"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK  \n {\n   \"count\": 201\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\message.js"
+  },
+  {
+    "type": "post",
+    "url": "/user/:uid/avatar",
+    "title": "上传头像",
+    "name": "上传头像",
+    "group": "用户类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "field": "file",
+            "optional": false,
+            "description": "表单文件对象"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "path",
+            "optional": false,
+            "description": "头像地址"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK  \n {\n   path: \"a049da063b26904d7aa7e1621d10f93b.jpg\"\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\user.js"
+  },
+  {
+    "type": "put",
+    "url": "/user/:uid/nickname",
+    "title": "更改昵称",
+    "name": "更改昵称",
+    "group": "用户类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "nickname",
+            "optional": false,
+            "description": "用户昵称"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "nickname",
+            "optional": false,
+            "description": "用户昵称"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK  \n {\n   \"uid\": 13,\n   \"nickname\": \"兔子\",\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\user.js"
+  },
+  {
+    "type": "get",
+    "url": "/user/logout",
+    "title": "注销",
+    "name": "注销",
+    "group": "用户类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "none",
+      "title": "无",
+      "description": ""
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n"
+        }
+      ]
+    },
+    "filename": "api\\user.js"
+  },
+  {
+    "type": "post",
+    "url": "/user/login",
+    "title": "登录",
+    "name": "登录",
+    "group": "用户类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "none",
+      "title": "无",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "username",
+            "optional": false,
+            "description": "用户名"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "password",
+            "optional": false,
+            "description": "用户密码"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n   \"uid\":\"1\"\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\user.js"
+  },
+  {
+    "type": "get",
+    "url": "/user/:uid",
+    "title": "获取指定用户",
+    "name": "获取指定用户",
+    "group": "用户类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":uid",
+            "optional": false,
+            "description": "用户ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "username",
+            "optional": false,
+            "description": "用户名"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "nickname",
+            "optional": false,
+            "description": "用户昵称"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "mood",
+            "optional": false,
+            "description": "用户心情"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "allowtype",
+            "optional": false,
+            "description": "允许将其加为好友的验证类型"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "question",
+            "optional": false,
+            "description": "验证问题"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "answer",
+            "optional": false,
+            "description": "验证回答"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "regtime",
+            "optional": false,
+            "description": "注册时间"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "regip",
+            "optional": false,
+            "description": "注册IP"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "lastlogintime",
+            "optional": false,
+            "description": "最后登录时间"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "lastloginip",
+            "optional": false,
+            "description": "最后登录IP"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "avatar",
+            "optional": false,
+            "description": "用户头像地址"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "area",
+            "optional": false,
+            "description": "用户所在地区"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK  \n {\n   \"uid\": 13,\n   \"username\": \"root\",\n   \"nickname\": \"兔子\",\n   \"mood\": \"今天好心情\",\n   \"allowtype\": 1,\n   \"question\": \"haha\",\n   \"answer\": \"lala\",\n   \"regtime\": 1382837732,\n   \"regip\": \"127.0.0.1\",\n   \"lastlogintime\": 1382837732,\n   \"lastloginip\": \"127.0.0.1\",\n   \"avatar\": \"57931a1eb6e3c29b849af741dc19b095.jpg\",\n   \"area\": \"河南 郑州\"\n }\n"
+        }
+      ]
+    },
+    "filename": "api\\user.js"
+  },
+  {
+    "type": "get",
+    "url": "/user",
+    "title": "获取用户列表",
+    "name": "获取用户列表",
+    "group": "用户类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "uids",
+            "optional": false,
+            "description": "用户ID,多个uid用逗号分隔,如13,14,15,...."
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "limit",
+            "optional": false,
+            "description": "数据分段参数,例:limit 0,15(如存在uids,本参数无效)"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "friend",
+            "optional": false,
+            "description": "是否包含好友(默认为\"true\",如存在uids,本参数无效,本字段为String类型只接收\"true\"|\"false\",其他值一律视为false)"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "username",
+            "optional": false,
+            "description": "用户名"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "nickname",
+            "optional": false,
+            "description": "用户昵称"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "mood",
+            "optional": false,
+            "description": "用户心情"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "allowtype",
+            "optional": false,
+            "description": "允许将其加为好友的验证类型"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "question",
+            "optional": false,
+            "description": "验证问题"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "answer",
+            "optional": false,
+            "description": "验证回答"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "regtime",
+            "optional": false,
+            "description": "注册时间"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "regip",
+            "optional": false,
+            "description": "注册IP"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "lastlogintime",
+            "optional": false,
+            "description": "最后登录时间"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "lastloginip",
+            "optional": false,
+            "description": "最后登录IP"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "avatar",
+            "optional": false,
+            "description": "用户头像地址"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "area",
+            "optional": false,
+            "description": "用户所在地区"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK  \n [\n   {\n     \"uid\": 13,\n     \"username\": \"root\",\n     \"nickname\": \"兔子\",\n     \"mood\": \"今天好心情\",\n     \"allowtype\": 1,\n     \"question\": \"haha\",\n     \"answer\": \"lala\",\n     \"regtime\": 1382837732,\n     \"regip\": \"127.0.0.1\",\n     \"lastlogintime\": 1382837732,\n     \"lastloginip\": \"127.0.0.1\",\n     \"avatar\": \"57931a1eb6e3c29b849af741dc19b095.jpg\",\n     \"area\": \"河南 郑州\"\n   }\n   ......\n ]\n"
+        }
+      ]
+    },
+    "filename": "api\\user.js"
+  },
+  {
+    "type": "get",
+    "url": "/user/status",
+    "title": "获取用户状态",
+    "name": "获取用户状态",
+    "group": "用户类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "username",
+            "optional": false,
+            "description": "用户名"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "logintime",
+            "optional": false,
+            "description": "登录时间"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n{\n \"uid\": \"1\",\n \"username\": \"user\",\n \"logintime\": \"passwd\"\n}\n"
+        }
+      ]
+    },
+    "filename": "api\\user.js"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "name": "speedy",
+  "version": "0.0.1",
+  "private": true,
+  "apidocFilename": "API.md",
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "authcode": "*",
+    "express": "3.1.0",
+    "mysql": "*",
+    "q": "^1.0.0",
+    "socket.io": "*",
+    "underscore": "^1.6.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-apidoc": "^0.4.0"
+  }
+}
