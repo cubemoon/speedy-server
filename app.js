@@ -27,39 +27,44 @@ speedy.route.messageRoutes = require(DIR_ROOT + '/api/message');
 var express = require('express'),
     http = require('http'),
     path = require('path'),
+    bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
+    favicon = require('static-favicon'),
+    morgan  = require('morgan'),
+    methodOverride = require('method-override'),
+    multipart = require('connect-multiparty'),
     cookie = require('express/node_modules/cookie');
 
 var app = express();
 
-app.configure(function() {
-  app.set('port', process.env.PORT || 3000);
-  app.use(express.favicon());
-  app.use(express.static(path.join(__dirname, '/client')));
-  app.use(express.static(path.join(__dirname, '/avatar')));
-  app.use(express.logger('dev'));
-  app.use(express.bodyParser({
-    uploadDir: DIR_ROOT + '/tmp'
-  }));
-  app.use(express.methodOverride());
-  app.use(express.cookieParser());
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-    res.header("X-Powered-By", ' 3.2.1')
-    res.header("Content-Type", "application/json;charset=utf-8");
-    //登录验证
-    if (!((req.url == '/user/login' || req.url == '/user') && req.method == 'POST') && !(req.url.substr(0, 4) == '/lib')) {
-      var auth = new speedy.lib.Auth(req, res);
-      speedy.userAuth = auth.get();
-      if (!speedy.userAuth.uid) {
-        res.status(401);
-        res.json();
-        return false;
-      }
+app.set('port', process.env.PORT || 3000);
+app.use(favicon());
+app.use(express.static(path.join(__dirname, '/client')));
+app.use(express.static(path.join(__dirname, '/avatar')));
+app.use(morgan('dev'));
+app.use(multipart());
+app.use(bodyParser({
+  uploadDir: DIR_ROOT + '/tmp'
+}));
+app.use(methodOverride());
+app.use(cookieParser());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  res.header("X-Powered-By", ' 3.2.1')
+  res.header("Content-Type", "application/json;charset=utf-8");
+  //登录验证
+  if (!((req.url == '/user/login' || req.url == '/user') && req.method == 'POST') && !(req.url.substr(0, 4) == '/lib')) {
+    var auth = new speedy.lib.Auth(req, res);
+    speedy.userAuth = auth.get();
+    if (!speedy.userAuth.uid) {
+      res.status(401);
+      res.json();
+      return false;
     }
-    next();
-  });
+  }
+  next();
 });
 
 var server = http.createServer(app),
