@@ -1,7 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var userModel = speedy.model.userModel,
-      Auth = speedy.lib.Auth,
+      auth = speedy.lib.auth,
       md5 = speedy.lib.tools.md5,
       unixtime = speedy.lib.tools.unixtime,
       _ = require('underscore'),
@@ -19,30 +19,31 @@ module.exports = function(app) {
    * @apiParam {String} password 用户密码
    *
    * @apiSuccess {Number} uid 用户ID
+   * @apiSuccess {String} token 授权码
    *
    * @apiSuccessExample Success-Response:
    *   HTTP/1.1 200 OK
    *   {
-   *     "uid":"1"
+   *     "uid":"1",
+   *     "token":"44edMrEL8MMBJwb8A0xj32VDbx/zYSVwbPCgko/nVwuFAB5fIpzPul88OMrnO9M"
    *   }
    *
    */
   app.post('/user/login', function(req, res) {
     var data = req.body;
     userModel.check(data).then(function(result) {
-      var auth = new Auth(req, res);
       if (!_.isEmpty(result)) {
         result = result[0];
         try {
-          //设置cookie
-          auth.set(result);
+          var token = auth.getToken(result);
           //更新用户最后登录状态
           userModel.refresh({
             ip: req.ip,
             uid: result.uid
           });
           res.json({
-            uid: result.uid
+            uid: result.uid,
+            token: token
           });
         } catch (err) {
           console.error(err);
@@ -59,24 +60,6 @@ module.exports = function(app) {
       res.status(500);
       res.json();
     });
-  });
-
-  /**
-   * @api {get} /user/logout 注销
-   * @apiName 注销
-   * @apiGroup 用户类
-   * @apiVersion 0.0.1
-   * @apiPermission none
-   *
-   * @apiSuccessExample Success-Response:
-   *   HTTP/1.1 200 OK
-   *   
-   */
-  app.get('/user/logout', function(req, res) {
-    var auth = new Auth(req, res);
-    auth.clear();
-    res.status(200);
-    res.json();
   });
 
   /**

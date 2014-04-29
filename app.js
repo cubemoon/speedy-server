@@ -13,7 +13,7 @@ speedy.routes = require(DIR_ROOT + '/api');
 speedy.lib.db = require(DIR_ROOT + '/lib/db');
 speedy.lib.online = require(DIR_ROOT + '/lib/online_user');
 speedy.lib.tools = require(DIR_ROOT + '/lib/tools');
-speedy.lib.Auth = require(DIR_ROOT + '/lib/auth');
+speedy.lib.auth = require(DIR_ROOT + '/lib/auth');
 speedy.model.messageModel = require(DIR_ROOT + '/model/message');
 speedy.model.friendModel = require(DIR_ROOT + '/model/friend');
 speedy.model.friendGroupModel = require(DIR_ROOT + '/model/friend_group');
@@ -48,16 +48,37 @@ app.use(bodyParser({
 }));
 app.use(methodOverride());
 app.use(cookieParser());
+//CORS设置
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-  res.header("X-Powered-By", ' 3.2.1')
-  res.header("Content-Type", "application/json;charset=utf-8");
+  var oneof = false;
+  if (req.headers.origin) {
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    oneof = true;
+  }
+  if (req.headers['access-control-request-method']) {
+    res.header('Access-Control-Allow-Methods', req.headers['access-control-request-method']);
+    oneof = true;
+  }
+  if (req.headers['access-control-request-headers']) {
+    res.header('Access-Control-Allow-Headers', req.headers['access-control-request-headers']);
+    oneof = true;
+  }
+  if (oneof) {
+    res.header('Access-Control-Max-Age', 60 * 60 * 24 * 365);
+  }
+  // intercept OPTIONS method
+  if (oneof && req.method == 'OPTIONS') {
+    res.send(200);
+  } else {
+    next();
+  }
+});
+app.use(function(req, res, next) {
   //登录验证
   if (!((req.url == '/user/login' || req.url == '/user') && req.method == 'POST') && !(req.url.substr(0, 4) == '/lib')) {
-    var auth = new speedy.lib.Auth(req, res);
-    speedy.userAuth = auth.get();
+    var auth = speedy.lib.auth;
+    var token = req.headers.authorization;
+    speedy.userAuth = auth.checkToken(token);
     if (!speedy.userAuth.uid) {
       res.status(401);
       res.json();
