@@ -279,6 +279,53 @@ module.exports = function(app) {
   });
 
   /**
+   * @api {put} /user/:uid/mood 更改个性签名
+   * @apiName 更改个性签名
+   * @apiGroup 用户类
+   * @apiVersion 0.0.1
+   * @apiPermission user
+   *
+   * @apiParam {Number} :uid 用户ID
+   * @apiParam {String} mood 用户签名
+   *
+   * @apiSuccess {Number} uid 用户ID
+   * @apiSuccess {String} mood 用户签名
+   *
+   * @apiSuccessExample Success-Response:
+   *   HTTP/1.1 200 OK  
+   *   {
+   *     "uid": 13,
+   *     "mood": "今天是个好天气",
+   *   }
+   *
+   */
+  app.put('/user/:uid/mood', function(req, res) {
+    if (_.isUndefined(req.body.mood)) {
+      console.error('参数错误');
+      res.status(400);
+      res.json();
+      return;
+    }
+    if (speedy.userAuth.uid != req.params.uid) {
+      res.status(403);
+      res.json();
+      return;
+    }
+    var data = {
+      uid: req.params.uid,
+      mood: req.body.mood
+    }
+    userModel.update(data).then(function(result) {
+      res.json(data);
+    }).
+    catch (function(err) {
+      console.error(err);
+      res.status(500);
+      res.json();
+    });
+  });
+
+  /**
    * @api {post} /user/:uid/avatar 上传头像
    * @apiName 上传头像
    * @apiGroup 用户类

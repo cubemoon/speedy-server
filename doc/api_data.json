@@ -4,14 +4,14 @@
     "group": "_apidoc.js",
     "type": "",
     "url": "",
-    "filename": "api\\_apidoc.js"
+    "filename": "api/_apidoc.js"
   },
   {
     "version": "0.0.1",
     "group": "_apidoc.js",
     "type": "",
     "url": "",
-    "filename": "api\\_apidoc.js"
+    "filename": "api/_apidoc.js"
   },
   {
     "type": "delete",
@@ -46,7 +46,7 @@
         }
       ]
     },
-    "filename": "api\\friend_group.js"
+    "filename": "api/friend_group.js"
   },
   {
     "type": "put",
@@ -113,7 +113,7 @@
         }
       ]
     },
-    "filename": "api\\friend_group.js"
+    "filename": "api/friend_group.js"
   },
   {
     "type": "post",
@@ -166,7 +166,7 @@
         }
       ]
     },
-    "filename": "api\\friend_group.js"
+    "filename": "api/friend_group.js"
   },
   {
     "type": "get",
@@ -226,7 +226,7 @@
         }
       ]
     },
-    "filename": "api\\friend_group.js"
+    "filename": "api/friend_group.js"
   },
   {
     "type": "delete",
@@ -261,7 +261,7 @@
         }
       ]
     },
-    "filename": "api\\friend.js"
+    "filename": "api/friend.js"
   },
   {
     "type": "post",
@@ -321,7 +321,7 @@
         }
       ]
     },
-    "filename": "api\\friend.js"
+    "filename": "api/friend.js"
   },
   {
     "type": "put",
@@ -402,7 +402,7 @@
         }
       ]
     },
-    "filename": "api\\friend.js"
+    "filename": "api/friend.js"
   },
   {
     "type": "post",
@@ -490,7 +490,7 @@
         }
       ]
     },
-    "filename": "api\\friend.js"
+    "filename": "api/friend.js"
   },
   {
     "type": "get",
@@ -592,7 +592,7 @@
         }
       ]
     },
-    "filename": "api\\friend.js"
+    "filename": "api/friend.js"
   },
   {
     "type": "get",
@@ -708,7 +708,7 @@
         }
       ]
     },
-    "filename": "api\\message.js"
+    "filename": "api/message.js"
   },
   {
     "type": "get",
@@ -768,7 +768,7 @@
         }
       ]
     },
-    "filename": "api\\message.js"
+    "filename": "api/message.js"
   },
   {
     "type": "post",
@@ -821,7 +821,67 @@
         }
       ]
     },
-    "filename": "api\\user.js"
+    "filename": "api/user.js"
+  },
+  {
+    "type": "put",
+    "url": "/user/:uid/mood",
+    "title": "更改个性签名",
+    "name": "更改个性签名",
+    "group": "用户类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": ":uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "mood",
+            "optional": false,
+            "description": "用户签名"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "mood",
+            "optional": false,
+            "description": "用户签名"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK  \n {\n   \"uid\": 13,\n   \"mood\": \"今天是个好天气\",\n }\n"
+        }
+      ]
+    },
+    "filename": "api/user.js"
   },
   {
     "type": "put",
@@ -881,7 +941,7 @@
         }
       ]
     },
-    "filename": "api\\user.js"
+    "filename": "api/user.js"
   },
   {
     "type": "post",
@@ -941,7 +1001,7 @@
         }
       ]
     },
-    "filename": "api\\user.js"
+    "filename": "api/user.js"
   },
   {
     "type": "get",
@@ -1071,7 +1131,7 @@
         }
       ]
     },
-    "filename": "api\\user.js"
+    "filename": "api/user.js"
   },
   {
     "type": "get",
@@ -1215,7 +1275,7 @@
         }
       ]
     },
-    "filename": "api\\user.js"
+    "filename": "api/user.js"
   },
   {
     "type": "get",
@@ -1262,6 +1322,6 @@
         }
       ]
     },
-    "filename": "api\\user.js"
+    "filename": "api/user.js"
   }
 ]

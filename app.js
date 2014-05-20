@@ -77,7 +77,7 @@ app.use(function(req, res, next) {
   //登录验证
   if (!((req.url == '/user/login' || req.url == '/user') && req.method == 'POST') && !(req.url.substr(0, 4) == '/lib')) {
     var auth = speedy.lib.auth;
-    var token = req.headers.authorization;
+    var token = req.headers.authorization || '';
     speedy.userAuth = auth.checkToken(token);
     if (!speedy.userAuth.uid) {
       res.status(401);
