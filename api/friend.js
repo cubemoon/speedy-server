@@ -145,7 +145,7 @@ module.exports = function(app) {
     var data = {};
     data.id = req.params.id;
     data.uid = speedy.userAuth.uid;
-    if (req.body.fgid) {
+    if (req.body.fgid >= 0) {
       data.fgid = req.body.fgid;
     }
     if (req.body.ischeck) {
