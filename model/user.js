@@ -59,6 +59,9 @@ User.prototype.getList = function(data, limit, withoutfriend) {
     if (err) {
       deferred.reject(err);
     }
+    _.forEach(rows, function(value, key) {
+      delete value['password'];
+    });
     deferred.resolve(rows);
   });
   return deferred.promise;
