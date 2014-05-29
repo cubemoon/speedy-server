@@ -11,8 +11,8 @@ speedy.route={};
 speedy.config = require(DIR_ROOT + '/config.json');
 speedy.routes = require(DIR_ROOT + '/api');
 speedy.lib.db = require(DIR_ROOT + '/lib/db');
-speedy.lib.online = require(DIR_ROOT + '/lib/online_user');
 speedy.lib.tools = require(DIR_ROOT + '/lib/tools');
+speedy.lib.online = require(DIR_ROOT + '/lib/online_user');
 speedy.lib.auth = require(DIR_ROOT + '/lib/auth');
 speedy.model.messageModel = require(DIR_ROOT + '/model/message');
 speedy.model.friendModel = require(DIR_ROOT + '/model/friend');
@@ -22,7 +22,6 @@ speedy.route.userRoutes = require(DIR_ROOT + '/api/user');
 speedy.route.friendRoutes = require(DIR_ROOT + '/api/friend');
 speedy.route.friendGroupRoutes = require(DIR_ROOT + '/api/friend_group');
 speedy.route.messageRoutes = require(DIR_ROOT + '/api/message');
-
 
 var express = require('express'),
     http = require('http'),
@@ -108,29 +107,39 @@ io.configure(function() {
     redisSub: sub,
     redisClient: client
   }));
-  io.set('authorization', function(handshakeData, callback) {
-    if (handshakeData.headers.cookie) {
-      handshakeData.cookies = cookie.parse(decodeURIComponent(handshakeData.headers.cookie));
-      return callback(null, true);
-    }
-    return callback(null, true);
-  });
 });
 
 io.sockets.on('connection', function(socket) {
-  //验证用户cookie
-  if (socket.handshake.cookies) {
-    var auth = new speedy.lib.Auth(socket.handshake);
-    var socketUser = auth.get();
-  }
-
+  var socketUser = {};
   //用户登录socket
   socket.on('login', function(data) {
-    speedy.lib.online.set(data.uid, socket.id).then(function(result) {
-      //向在线好友广播用户上线
+    speedy.lib.online.set(data.uid, socket.id);
+    //获取好友列表
+    speedy.model.friendModel.list({
+      uid: data.uid
+    }).then(function(result) {
+      var tmpuser = [];
       for (var i in result) {
-        io.sockets.socket(result[i]).emit('online', data.uid);
+        tmpuser.push(result[i]['fuid']);
       }
+      return speedy.lib.online.getList(tmpuser);
+    }).then(function(result) {
+      //获取在线好友的socketid
+      var newData = [];
+      for (var i in result) {
+        if (result[i] != null) {
+          result[i] = JSON.parse(result[i]);
+          for (var k in result[i]) {
+            newData.push(result[i][k]);
+          }
+        }
+      }
+      //向在线好友广播用户上线
+      for (var i in newData) {
+        io.sockets.socket(newData[i]).emit('online', data.uid);
+      }
+    }).catch(function(err) {
+      deferred.reject(err);
     });
     socketUser = data;
     speedy.model.messageModel.getOffline({
@@ -164,7 +173,6 @@ io.sockets.on('connection', function(socket) {
       key: data.key,
       content: JSON.stringify(data.data)
     }
-
     speedy.model.messageModel.add(dbSaveData).then(function(result) {
       speedy.lib.online.get(data['to']).then(function(user) {
         data.id = result.insertId;
@@ -182,22 +190,66 @@ io.sockets.on('connection', function(socket) {
 
   //用户退出
   socket.on('logout', function() {
-    speedy.lib.online.clear(socketUser.uid, socket.id).then(function(result) {
-      //向在线好友广播用户离线
+    speedy.lib.online.clear(socketUser.uid, socket.id);
+    //获取好友列表
+    speedy.model.friendModel.list({
+      uid: socketUser.uid
+    }).then(function(result) {
+      var tmpuser = [];
       for (var i in result) {
-        io.sockets.socket(result[i]).emit('offline', socketUser.uid);
+        tmpuser.push(result[i]['fuid']);
       }
+      return speedy.lib.online.getList(tmpuser);
+    }).then(function(result) {
+      //获取在线好友的socketid
+      var newData = [];
+      for (var i in result) {
+        if (result[i] != null) {
+          result[i] = JSON.parse(result[i]);
+          for (var k in result[i]) {
+            newData.push(result[i][k]);
+          }
+        }
+      }
+      //向在线好友广播用户下线
+      for (var i in newData) {
+        io.sockets.socket(newData[i]).emit('offline', socketUser.uid);
+      }
+    }).catch(function(err) {
+      deferred.reject(err);
     });
   });
 
   //用户断开socket
   socket.on('disconnect', function() {
     if (typeof(socketUser) != 'undefined') {
-      speedy.lib.online.clear(socketUser.uid, socket.id).then(function(result) {
-        //向在线好友广播用户离线
+      speedy.lib.online.clear(socketUser.uid, socket.id);
+      //获取好友列表
+      speedy.model.friendModel.list({
+        uid: socketUser.uid
+      }).then(function(result) {
+        var tmpuser = [];
         for (var i in result) {
-          io.sockets.socket(result[i]).emit('offline', socketUser.uid);
+          tmpuser.push(result[i]['fuid']);
         }
+        return speedy.lib.online.getList(tmpuser);
+      }).then(function(result) {
+        //获取在线好友的socketid
+        var newData = [];
+        for (var i in result) {
+          if (result[i] != null) {
+            result[i] = JSON.parse(result[i]);
+            for (var k in result[i]) {
+              newData.push(result[i][k]);
+            }
+          }
+        }
+        //向在线好友广播用户下线
+        for (var i in newData) {
+          io.sockets.socket(newData[i]).emit('offline', socketUser.uid);
+        }
+      }).catch(function(err) {
+        deferred.reject(err);
       });
     }
   });
