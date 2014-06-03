@@ -89,25 +89,17 @@ app.use(function(req, res, next) {
 
 var server = http.createServer(app),
     sio = require('socket.io'),
-    io = sio.listen(server),
-    RedisStore = require('socket.io/lib/stores/redis'),
-    redis = require('socket.io/node_modules/redis'),
-    pub = redis.createClient(speedy.config.redis.port, speedy.config.redis.host),
-    sub = redis.createClient(speedy.config.redis.port, speedy.config.redis.host),
-    client = redis.createClient(speedy.config.redis.port, speedy.config.redis.host);
+    io = sio(server);
 
 server.listen(app.get('port'), function() {
   console.log("speedy server listening on port " + app.get('port'));
 });
 
-//socket.io 配置
-io.configure(function() {
-  io.set('store', new RedisStore({
-    redisPub: pub,
-    redisSub: sub,
-    redisClient: client
-  }));
-});
+var redis = require('socket.io-redis');
+io.adapter(redis({
+  host: speedy.config.redis.host,
+  port: speedy.config.redis.port
+}));
 
 io.sockets.on('connection', function(socket) {
   var socketUser = {};
@@ -136,7 +128,7 @@ io.sockets.on('connection', function(socket) {
       }
       //向在线好友广播用户上线
       for (var i in newData) {
-        io.sockets.socket(newData[i]).emit('online', data.uid);
+        io.sockets.connected[newData[i]].emit('online', data.uid);
       }
     }).catch(function(err) {
       deferred.reject(err);
@@ -179,7 +171,7 @@ io.sockets.on('connection', function(socket) {
         fn(data);
         //向用户发送私聊信息
         for (var i in user) {
-          io.sockets.socket(user[i]).emit('msg', data);
+          io.sockets.connected[user[i]].emit('msg', data);
         }
       });
     }).
@@ -213,7 +205,7 @@ io.sockets.on('connection', function(socket) {
       }
       //向在线好友广播用户下线
       for (var i in newData) {
-        io.sockets.socket(newData[i]).emit('offline', socketUser.uid);
+        io.sockets.connected[newData[i]].emit('offline', socketUser.uid);
       }
     }).catch(function(err) {
       deferred.reject(err);
@@ -246,74 +238,12 @@ io.sockets.on('connection', function(socket) {
         }
         //向在线好友广播用户下线
         for (var i in newData) {
-          io.sockets.socket(newData[i]).emit('offline', socketUser.uid);
+          io.sockets.connected[newData[i]].emit('offline', socketUser.uid);
         }
       }).catch(function(err) {
         deferred.reject(err);
       });
     }
-  });
-
-  //webrtc部分
-  socket.on('rtc_offer', function(data) {
-    io.sockets.socket(data.socketId).emit('rtc_receiveOffer', {
-      "sdp": data.sdp,
-      "socketId": socket.id
-    });
-  });
-
-  socket.on('rtc_offer_ice_candidate', function(data) {
-    io.sockets.socket(data.socketId).emit('rtc_receiveOfferIce', {
-      "ice": data.ice,
-      "socketId": socket.id
-    });
-  });
-
-  socket.on('rtc_answer', function(data) {
-    io.sockets.socket(data.socketId).emit('rtc_receiveAnswer', {
-      "sdp": data.sdp,
-      "socketId": socket.id
-    });
-  });
-
-  socket.on('rtc_answer_ice_candidate', function(data) {
-    io.sockets.socket(data.socketId).emit('rtc_receiveAnswerIce', {
-      "ice": data.ice,
-      "socketId": socket.id
-    });
-  });
-
-  socket.on('rtc_file_transfer', function(data, fn) {
-    var eventName;
-    data.key = speedy.lib.tools.md5(data.to + '|' + data.from + '|' + data.type);
-    data.fromsocketid = socket.id;
-    speedy.lib.online.get(data.to).then(function(user) {
-      for (var i in user) {
-        switch (data.action) {
-          case 'ask':
-            eventName = 'rtc_file_transfer_receiveAsk';
-            break;
-          case 'accept':
-            eventName = 'rtc_file_transfer_receiveAccept';
-            break;
-          case 'refuse':
-            eventName = 'rtc_file_transfer_receiveRefuse';
-            break;
-          case 'chunk':
-            eventName = 'rtc_file_transfer_receiveChunk';
-            break;
-          case 'close':
-            eventName = 'rtc_file_transfer_receiveClose';
-            break;
-          default:
-            console.log('not action');
-        }
-        if (eventName) {
-          fn(data);
-          io.sockets.socket(user[i]).emit(eventName, data);
-        }
-      }
-    });
   });
 
 });
