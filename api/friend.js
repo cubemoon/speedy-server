@@ -79,11 +79,23 @@ module.exports = function(app) {
    * @apiParam {String} reason 好友拒绝了理由(可选)
    * 
    * @apiSuccess {Number} id 记录ID
+   * @apiSuccess {Number} uid 用户ID
+   * @apiSuccess {Number} fuid 好友用户ID
+   * @apiSuccess {Number} fgid 好友分组ID
+   * @apiSuccess {Number} ischeck 是否已审核通过
+   * @apiSuccess {String} remark 备注名
+   * @apiSuccess {String} apply 好友申请理由
    *
    * @apiSuccessExample Success-Response:
    *   HTTP/1.1 200 OK
    *   {
    *     "id": 472
+   *     "uid": 13,
+   *     "fuid": 16,
+   *     "fgid": 0,
+   *     "ischeck": 1,
+   *     "remark": "加贤",
+   *     "apply": "333",
    *   }
    *
    */
@@ -105,9 +117,7 @@ module.exports = function(app) {
       return;
     }
     friendModel.add(req.body).then(function(result) {
-      res.json({
-        id: result.insertId
-      });
+      res.json(result);
     }).
     catch (function(err) {
       console.log(err);

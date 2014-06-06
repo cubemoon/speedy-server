@@ -1,7 +1,7 @@
 'use strict';
 var db = speedy.lib.db,
     online = speedy.lib.online,
-    util = require('util'),
+    _ = require('underscore'),
     Q = require('q');
 
 var table = 'friend',
@@ -52,28 +52,39 @@ Friend.prototype.list = function(data) {
 Friend.prototype.add = function(data) {
   var deferred = Q.defer();
   if (data.uid && data.fuid) {
-    var params = {
-      uid: data.uid,
-      fuid: data.fuid,
-      fgid: data.fgid || 0,
-      ischeck: data.ischeck || 0,
-      remark: data.remark || '',
-      apply: data.apply || '',
-      reason: data.reason || ''
+    var sql = "SELECT id FROM " + table + " WHERE uid=:uid and fuid=:fuid and ischeck=1";
+    var tmpparams = {
+      uid: data.fuid,
+      fuid: data.uid
     }
-    var sql = "INSERT INTO " + table + " (uid,fuid,fgid,ischeck,remark,apply,reason) VALUES (:uid,:fuid,:fgid,:ischeck,:remark,:apply,:reason)";
-    db.query(sql, params, function(err, rows) {
-      if (err) {
-        deferred.reject(err);
+    db.query(sql, tmpparams, function(err, rows) {
+      if (!_.isEmpty(rows)) {
+        data.ischeck=1;
       }
-      //如果你是对方为审核的好友,将对方好友的状态改为已审核
-      var newparams = {
-        fuid: data.uid,
-        uid: data.fuid
+      var params = {
+        uid: data.uid,
+        fuid: data.fuid,
+        fgid: data.fgid || 0,
+        ischeck: data.ischeck || 0,
+        remark: data.remark || '',
+        apply: data.apply || '',
+        reason: data.reason || ''
       }
-      var sql = "UPDATE " + table + " SET ischeck=1 WHERE uid=:uid AND fuid=:fuid";
-      db.query(sql, newparams, function() {});
-      deferred.resolve(rows);
+      var sql = "INSERT INTO " + table + " (uid,fuid,fgid,ischeck,remark,apply,reason) VALUES (:uid,:fuid,:fgid,:ischeck,:remark,:apply,:reason)";
+      db.query(sql, params, function(err, rows) {
+        if (err) {
+          deferred.reject(err);
+        }
+        //如果你是对方为审核的好友,将对方好友的状态改为已审核
+        var newparams = {
+          fuid: data.uid,
+          uid: data.fuid
+        }
+        var sql = "UPDATE " + table + " SET ischeck=1 WHERE uid=:uid AND fuid=:fuid";
+        db.query(sql, newparams, function() {});
+        params.id = rows.insertId;
+        deferred.resolve(params);
+      });
     });
   } else {
     deferred.reject({

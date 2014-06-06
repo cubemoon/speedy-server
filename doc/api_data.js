@@ -480,13 +480,55 @@ define({ api: [
             "field": "id",
             "optional": false,
             "description": "记录ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "fuid",
+            "optional": false,
+            "description": "好友用户ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "fgid",
+            "optional": false,
+            "description": "好友分组ID"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "ischeck",
+            "optional": false,
+            "description": "是否已审核通过"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "remark",
+            "optional": false,
+            "description": "备注名"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "apply",
+            "optional": false,
+            "description": "好友申请理由"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n {\n   \"id\": 472\n }\n"
+          "content": " HTTP/1.1 200 OK\n {\n   \"id\": 472\n   \"uid\": 13,\n   \"fuid\": 16,\n   \"fgid\": 0,\n   \"ischeck\": 1,\n   \"remark\": \"加贤\",\n   \"apply\": \"333\",\n }\n"
         }
       ]
     },
