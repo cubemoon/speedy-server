@@ -140,12 +140,34 @@ Friend.prototype.delete = function(data) {
 Friend.prototype.reject = function(data) {
   var deferred = Q.defer();
   if (data.uid && data.fuid) {
-    var sql = "DELETE FROM friend WHERE uid=:uid AND fuid=:fuid AND ischeck=0";
+    var sql = "DELETE FROM " + table + " WHERE uid=:uid AND fuid=:fuid AND ischeck=0";
     var params = {
       uid: data.uid,
       fuid: data.fuid
     }
     db.query(sql, params, function(err, rows) {
+      if (err) {
+        deferred.reject(err);
+      }
+      deferred.resolve(rows);
+    });
+  } else {
+    deferred.reject({
+      msg: '参数错误'
+    });
+  }
+  return deferred.promise;
+}
+
+Friend.prototype.move = function(uid, from, to) {
+  var deferred = Q.defer();
+  if (!_.isUndefined(uid) && !_.isUndefined(from)) {
+    var data = {};
+    data['uid'] = uid;
+    data['from'] = from;
+    data['to'] = to || 0;
+    var sql = "UPDATE " + table + " SET fgid=:to WHERE fgid=:from and uid=:uid";
+    db.query(sql, data, function(err, rows) {
       if (err) {
         deferred.reject(err);
       }

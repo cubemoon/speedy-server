@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(app) {
   var friendGroupModel = speedy.model.friendGroupModel,
+      friendModel = speedy.model.friendModel,
       _ = require('underscore');
 
   /**
@@ -172,13 +173,14 @@ module.exports = function(app) {
     }
     friendGroupModel.delete(data).then(function(result) {
       if (result.affectedRows > 0) {
+        friendModel.move(data.uid, data.id);
         res.json();
       } else {
         res.status(400);
         res.json();
       }
     }).
-    catch (function(err) {
+    catch(function(err) {
       console.log(err);
       res.status(500);
       res.json();
