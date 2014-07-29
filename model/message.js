@@ -13,17 +13,16 @@ function Message() {
 
 Message.prototype.add = function(data) {
   var deferred = Q.defer();
-  if (data.key && data.toid && data.fromid && data.type && data.content) {
+  if (data.key && data.toid && data.fromid && data.content) {
     var params = {
       keyid: data.key,
       toid: data.toid,
       fromid: data.fromid,
-      type: data.type,
       createtime: unixtime(new Date),
       isread: 0,
       content: data.content
     }
-    var sql = "INSERT INTO " + table + " (keyid,toid,fromid,type,createtime,isread,content) VALUES (:keyid,:toid,:fromid,:type,:createtime,:isread,:content)";
+    var sql = "INSERT INTO " + table + " (keyid,toid,fromid,createtime,isread,content) VALUES (:keyid,:toid,:fromid,:createtime,:isread,:content)";
     db.query(sql, params, function(err, rows) {
       if (err) {
         deferred.reject(err);
@@ -86,14 +85,13 @@ Message.prototype.getOffline = function(data) {
 //获取聊天记录
 Message.prototype.getLog = function(data) {
   var deferred = Q.defer();
-  if (data['toid'] && data['fromid'] && data['type']) {
+  if (data['toid'] && data['fromid']) {
     var params = {
       toid: data['toid'],
       fromid: data['fromid'],
-      type: data['type'],
       limit: data['limit'] || 10
     }
-    var sql = "SELECT * FROM " + table + " WHERE ((toid=:toid AND fromid=:fromid) OR (toid=:fromid AND fromid=:toid)) AND type=:type ORDER BY createtime DESC LIMIT " + params.limit;
+    var sql = "SELECT * FROM " + table + " WHERE ((toid=:toid AND fromid=:fromid) OR (toid=:fromid AND fromid=:toid)) ORDER BY createtime DESC LIMIT " + params.limit;
     db.query(sql, params, function(err, rows) {
       if (err) {
         deferred.reject(err);
@@ -102,7 +100,6 @@ Message.prototype.getLog = function(data) {
       for (var i in rows) {
         retrunData[i] = {};
         retrunData[i]['id'] = rows[i]['id'];
-        retrunData[i]['type'] = rows[i]['type'];
         retrunData[i]['createtime'] = rows[i]['createtime'];
         retrunData[i]['isread'] = rows[i]['isread'];
         retrunData[i]['data'] = JSON.parse(rows[i]['content']);
@@ -123,13 +120,12 @@ Message.prototype.getLog = function(data) {
 //获取聊天记录
 Message.prototype.getLogCount = function(data) {
   var deferred = Q.defer();
-  if (data['toid'] && data['fromid'] && data['type']) {
+  if (data['toid'] && data['fromid']) {
     var params = {
       toid: data['toid'],
-      fromid: data['fromid'],
-      type: data['type']
+      fromid: data['fromid']
     }
-    var sql = "SELECT count(id) as count FROM " + table + " WHERE ((toid=:toid AND fromid=:fromid) OR (toid=:fromid AND fromid=:toid)) AND type=:type";
+    var sql = "SELECT count(id) as count FROM " + table + " WHERE ((toid=:toid AND fromid=:fromid) OR (toid=:fromid AND fromid=:toid))";
     db.query(sql, params, function(err, rows) {
       if (err) {
         deferred.reject(err);

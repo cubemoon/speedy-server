@@ -144,6 +144,18 @@ io.sockets.on('connection', function(socket) {
     catch (function(err) {
       console.log(err);
     });
+    speedy.model.friendModel.getOfflineApply(socketUser.uid).then(function(result) {
+      for (var i in result) {
+        result[i]['type']='checkfriend';
+        socket.emit('addfriendapply', result[i]);
+      }
+    });
+    speedy.model.friendModel.getOfflineReply(socketUser.uid).then(function(result) {
+      for (var i in result) {
+        result[i]['type'] = 'replyfriendapply';
+        socket.emit('replyfriendapply', result[i]);
+      }
+    });
   });
 
   //客户端回执,更新消息为已读
@@ -157,11 +169,10 @@ io.sockets.on('connection', function(socket) {
   socket.on('msg', function(data, fn) {
     var nowtime = speedy.lib.tools.unixtime(new Date);
     data.createtime = nowtime;
-    data.key = speedy.lib.tools.md5(data.to + '|' + data.from + '|' + data.type);
+    data.key = speedy.lib.tools.md5(data.to + '|' + data.from);
     var dbSaveData = {
       toid: data.to,
       fromid: data.from,
-      type: data.type,
       key: data.key,
       content: JSON.stringify(data.data)
     }
@@ -177,6 +188,28 @@ io.sockets.on('connection', function(socket) {
     }).
     catch (function(err) {
       console.log(err);
+    });
+  });
+
+  //好友申请
+  socket.on('addfriendapply', function(data) {
+    data['type']='checkfriend';
+    speedy.lib.online.get(data['toid']).then(function(user) {
+      //向用户发送私聊信息
+      for (var i in user) {
+        io.sockets.connected[user[i]].emit('addfriendapply', data);
+      }
+    });
+  });
+
+  //回复好友申请
+  socket.on('replyfriendapply', function(data) {
+    data['type']='replyfriendapply';
+    speedy.lib.online.get(data['toid']).then(function(user) {
+      //向用户发送私聊信息
+      for (var i in user) {
+        io.sockets.connected[user[i]].emit('replyfriendapply', data);
+      }
     });
   });
 

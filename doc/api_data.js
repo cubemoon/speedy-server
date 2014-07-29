@@ -265,6 +265,90 @@ define({ api: [
   },
   {
     "type": "post",
+    "url": "/friend/acceptted",
+    "title": "同意好友",
+    "name": "同意好友",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fromid",
+            "optional": false,
+            "description": "原发起人ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fuid",
+            "optional": false,
+            "description": "原接收人ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n"
+        }
+      ]
+    },
+    "filename": "api/friend.js"
+  },
+  {
+    "type": "post",
+    "url": "/friend/ignore",
+    "title": "忽略好友申请",
+    "name": "忽略好友申请",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fromid",
+            "optional": false,
+            "description": "原发起人ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "toid",
+            "optional": false,
+            "description": "原接收人ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n"
+        }
+      ]
+    },
+    "filename": "api/friend.js"
+  },
+  {
+    "type": "post",
     "url": "/friend/reject",
     "title": "拒绝好友",
     "name": "拒绝好友",
@@ -281,43 +365,25 @@ define({ api: [
           {
             "group": "Parameter",
             "type": "Number",
-            "field": "uid",
+            "field": "fromid",
             "optional": false,
-            "description": "用户ID"
+            "description": "原发起人ID"
           },
           {
             "group": "Parameter",
             "type": "Number",
             "field": "fuid",
             "optional": false,
-            "description": "好友用户ID"
+            "description": "原接收人ID"
           }
         ]
       }
     },
     "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "field": "id",
-            "optional": false,
-            "description": "记录ID"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "field": "fuid",
-            "optional": false,
-            "description": "好友用户ID"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n {\n   \"uid\": 13,\n   \"fuid\": 16\n }\n"
+          "content": " HTTP/1.1 200 OK\n"
         }
       ]
     },
@@ -442,31 +508,10 @@ define({ api: [
           },
           {
             "group": "Parameter",
-            "type": "Number",
-            "field": "ischeck",
-            "optional": false,
-            "description": "是否已审核通过(默认为0)"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "field": "remark",
             "optional": false,
-            "description": "备注名(可选)"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "field": "apply",
-            "optional": false,
-            "description": "好友申请理由(可选)"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "field": "reason",
-            "optional": false,
-            "description": "好友拒绝了理由(可选)"
+            "description": "备注名"
           }
         ]
       }
@@ -504,31 +549,108 @@ define({ api: [
           },
           {
             "group": "Success 200",
-            "type": "Number",
-            "field": "ischeck",
-            "optional": false,
-            "description": "是否已审核通过"
-          },
-          {
-            "group": "Success 200",
             "type": "String",
             "field": "remark",
             "optional": false,
             "description": "备注名"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "field": "apply",
-            "optional": false,
-            "description": "好友申请理由"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n {\n   \"id\": 472\n   \"uid\": 13,\n   \"fuid\": 16,\n   \"fgid\": 0,\n   \"ischeck\": 1,\n   \"remark\": \"加贤\",\n   \"apply\": \"333\",\n }\n"
+          "content": " HTTP/1.1 200 OK\n {\n   \"id\": 472\n   \"uid\": 13,\n   \"fuid\": 16,\n   \"fgid\": 0,\n   \"remark\": \"加贤\",\n }\n"
+        }
+      ]
+    },
+    "filename": "api/friend.js"
+  },
+  {
+    "type": "post",
+    "url": "/friend/apply",
+    "title": "添加好友申请",
+    "name": "添加好友申请",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fromid",
+            "optional": false,
+            "description": "发起人ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "toid",
+            "optional": false,
+            "description": "接收人ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "content",
+            "optional": false,
+            "description": "附加内容"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n"
+        }
+      ]
+    },
+    "filename": "api/friend.js"
+  },
+  {
+    "type": "post",
+    "url": "/friend/checkReply",
+    "title": "确认收到好友申请回复",
+    "name": "确认收到好友申请回复",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fromid",
+            "optional": false,
+            "description": "原发起人ID"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "fuid",
+            "optional": false,
+            "description": "原接收人ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n"
         }
       ]
     },
@@ -631,6 +753,41 @@ define({ api: [
         {
           "title": "Success-Response:",
           "content": " HTTP/1.1 200 OK\n [\n   {\n     \"id\": 472,\n     \"uid\": 13,\n     \"fuid\": 16,\n     \"fgid\": 0,\n     \"ischeck\": 1,\n     \"remark\": \"加贤\",\n     \"apply\": \"333\",\n     \"reason\": \"\",\n     \"isonline\": false\n   }\n   ......\n ]\n"
+        }
+      ]
+    },
+    "filename": "api/friend.js"
+  },
+  {
+    "type": "get",
+    "url": "/friend/allow/:uid",
+    "title": "获取添加好友的类型",
+    "name": "获取添加好友的类型",
+    "group": "好友类",
+    "version": "0.0.1",
+    "permission": {
+      "name": "user",
+      "title": "需要用户权限",
+      "description": ""
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "uid",
+            "optional": false,
+            "description": "用户ID"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n"
         }
       ]
     },

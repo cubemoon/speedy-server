@@ -52,39 +52,20 @@ Friend.prototype.list = function(data) {
 Friend.prototype.add = function(data) {
   var deferred = Q.defer();
   if (data.uid && data.fuid) {
-    var sql = "SELECT id FROM " + table + " WHERE uid=:uid and fuid=:fuid and ischeck=1";
-    var tmpparams = {
-      uid: data.fuid,
-      fuid: data.uid
+    var params = {
+      uid: data.uid,
+      fuid: data.fuid,
+      fgid: data.fgid || 0,
+      remark: data.remark || '',
     }
-    db.query(sql, tmpparams, function(err, rows) {
-      if (!_.isEmpty(rows)) {
-        data.ischeck=1;
+
+    var sql = "INSERT INTO " + table + " (uid,fuid,fgid,remark) VALUES (:uid,:fuid,:fgid,:remark)";
+    db.query(sql, params, function(err, rows) {
+      if (err) {
+        deferred.reject(err);
       }
-      var params = {
-        uid: data.uid,
-        fuid: data.fuid,
-        fgid: data.fgid || 0,
-        ischeck: data.ischeck || 0,
-        remark: data.remark || '',
-        apply: data.apply || '',
-        reason: data.reason || ''
-      }
-      var sql = "INSERT INTO " + table + " (uid,fuid,fgid,ischeck,remark,apply,reason) VALUES (:uid,:fuid,:fgid,:ischeck,:remark,:apply,:reason)";
-      db.query(sql, params, function(err, rows) {
-        if (err) {
-          deferred.reject(err);
-        }
-        //如果你是对方为审核的好友,将对方好友的状态改为已审核
-        var newparams = {
-          fuid: data.uid,
-          uid: data.fuid
-        }
-        var sql = "UPDATE " + table + " SET ischeck=1 WHERE uid=:uid AND fuid=:fuid";
-        db.query(sql, newparams, function() {});
-        params.id = rows.insertId;
-        deferred.resolve(params);
-      });
+      params.id = rows.insertId;
+      deferred.resolve(params);
     });
   } else {
     deferred.reject({
@@ -139,12 +120,125 @@ Friend.prototype.delete = function(data) {
 
 Friend.prototype.reject = function(data) {
   var deferred = Q.defer();
-  if (data.uid && data.fuid) {
-    var sql = "DELETE FROM " + table + " WHERE uid=:uid AND fuid=:fuid AND ischeck=0";
+  if (data.fromid && data.toid) {
+    var sql = "INSERT INTO addfriendreply (fromid,toid,acceptted) VALUES (:fromid,:toid,:acceptted)";
     var params = {
-      uid: data.uid,
-      fuid: data.fuid
+      fromid: data.toid,
+      toid: data.fromid,
+      acceptted: 0
     }
+    db.query(sql, params, function(err, rows) {
+      if (err) {
+        deferred.reject(err);
+      }
+      var sql = "DELETE FROM addfriend WHERE fromid=:fromid AND toid=:toid";
+      var params = {
+        fromid: data.fromid,
+        toid: data.toid
+      }
+      db.query(sql, params, function(err, rows) {
+        if (err) {
+          deferred.reject(err);
+        }
+        deferred.resolve(rows);
+      });
+    });
+  } else {
+    deferred.reject({
+      msg: '参数错误'
+    });
+  }
+  return deferred.promise;
+}
+
+Friend.prototype.acceptted = function(data) {
+  var deferred = Q.defer();
+  if (data.fromid && data.toid) {
+    var sql = "INSERT INTO addfriendreply (fromid,toid,acceptted) VALUES (:fromid,:toid,:acceptted)";
+    var params = {
+      fromid: data.toid,
+      toid: data.fromid,
+      acceptted: 1
+    }
+    db.query(sql, params, function(err, rows) {
+      if (err) {
+        deferred.reject(err);
+      }
+      var sql = "DELETE FROM addfriend WHERE fromid=:fromid AND toid=:toid";
+      var params = {
+        fromid: data.fromid,
+        toid: data.toid
+      }
+      db.query(sql, params, function(err, rows) {
+        if (err) {
+          deferred.reject(err);
+        }
+        deferred.resolve(rows);
+      });
+    });
+  } else {
+    deferred.reject({
+      msg: '参数错误'
+    });
+  }
+  return deferred.promise;
+}
+
+
+Friend.prototype.ignore = function(data) {
+  var deferred = Q.defer();
+  if (data.fromid && data.toid) {
+    var sql = "DELETE FROM addfriend WHERE fromid=:fromid AND toid=:toid";
+    var params = {
+      fromid: data.fromid,
+      toid: data.toid
+    }
+    db.query(sql, params, function(err, rows) {
+      if (err) {
+        deferred.reject(err);
+      }
+      deferred.resolve(rows);
+    });
+  } else {
+    deferred.reject({
+      msg: '参数错误'
+    });
+  }
+  return deferred.promise;
+}
+
+Friend.prototype.checkReply = function(data) {
+  var deferred = Q.defer();
+  if (data.fromid && data.toid) {
+    var sql = "DELETE FROM addfriendreply WHERE fromid=:fromid AND toid=:toid";
+    var params = {
+      fromid: data.fromid,
+      toid: data.toid
+    }
+    db.query(sql, params, function(err, rows) {
+      if (err) {
+        deferred.reject(err);
+      }
+      deferred.resolve(rows);
+    });
+  } else {
+    deferred.reject({
+      msg: '参数错误'
+    });
+  }
+  return deferred.promise;
+}
+
+
+Friend.prototype.apply = function(data) {
+  var deferred = Q.defer();
+  if (data.fromid && data.toid) {
+    var sql = "INSERT INTO addfriend (fromid,toid,content) VALUES (:fromid,:toid,:content)";
+    var params = {
+      fromid: data.fromid,
+      toid: data.toid,
+      content: data.content || ''
+    } 
     db.query(sql, params, function(err, rows) {
       if (err) {
         deferred.reject(err);
@@ -181,4 +275,45 @@ Friend.prototype.move = function(uid, from, to) {
   return deferred.promise;
 }
 
+Friend.prototype.getOfflineApply = function(uid) {
+  var deferred = Q.defer();
+  if (!_.isUndefined(uid)) {
+    var sql = "SELECT * FROM addfriend WHERE toid=:uid";
+    var params = {
+      uid: uid
+    }
+    db.query(sql, params, function(err, rows) {
+      if (err) {
+        deferred.reject(err);
+      }
+      deferred.resolve(rows);
+    });
+  } else {
+    deferred.reject({
+      msg: '参数错误'
+    });
+  }
+  return deferred.promise;
+}
+
+Friend.prototype.getOfflineReply = function(uid) {
+  var deferred = Q.defer();
+  if (!_.isUndefined(uid)) {
+    var sql = "SELECT * FROM addfriendreply WHERE toid=:uid";
+    var params = {
+      uid: uid
+    }
+    db.query(sql, params, function(err, rows) {
+      if (err) {
+        deferred.reject(err);
+      }
+      deferred.resolve(rows);
+    });
+  } else {
+    deferred.reject({
+      msg: '参数错误'
+    });
+  }
+  return deferred.promise;
+}
 module.exports = new Friend();
